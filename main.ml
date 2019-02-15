@@ -162,7 +162,7 @@ let runway_image radius =
   in
   let wind =
     static "polygon"
-    |. str attr "points" "130,300 150,270 170,300"
+    |. str attr "points" "130,0 150,30 170,0"
     |. str attr "style" "fill:red;stroke:blue;stroke-width:1"
     |. attr "transform" (fun _ m _ -> "rotate(" ^(string_of_int m.Model.wc) ^ " 150 150)")
   in
@@ -218,10 +218,10 @@ let wind_circle =
 let items_of_model k =
   static "div"
     |. seq [
-      range_with_label 0 360 k "wc" "Wind direction";
+      range_with_label 0 360 k "wc" "Wind from";
       range_with_label 0 50 k "ws" "Wind velocity";
       range_with_label 0 36 k "rh" "Runway heading";
-      text_field k "ts" "True airspeed (knots)";
+      text_field k "ts" "True airspeed";
       static "label" |. text (fun _ m _ -> "Crosswind component (knots): " ^ (Printf.sprintf "%.2f" @@ Model.crosswind m));
       static "br";
       static "label" |. text (fun _ m _ -> "Headwind  component (knots): " ^ (Printf.sprintf "%.2f" @@ Model.headwind m));
