@@ -1,6 +1,11 @@
 let pi = acos (-1.) (*No Pi constant?..*)
 let ($) f g = fun x -> f (g x) (*from devkit*)
 
+let str2d i =
+  if i = 0 then "36" else
+  if i < 10 then "0" ^ (string_of_int i)
+  else string_of_int i
+
 module Model = struct
 type t = { wc: int; ws: int; rh: int; }
 let init = { wc = 90; ws = 10; rh = 10; }
@@ -80,21 +85,38 @@ let runway_image radius =
     |. int attr "width" radius
   in
 
-  let line offset =
-    let xy f angle = int_of_float @@ ((float radius) *. (f ((float angle) *. 10. *. pi /. 180.)) /. 2. +. (float radius) /. 2.) in
-    static "line"
-    |. attr "x1" (fun _ m _ -> string_of_int @@ xy ((~-.) $ sin) (m.Model.rh + offset))
-    |. attr "y1" (fun _ m _ -> string_of_int @@ xy cos (m.Model.rh + offset))
-    |. attr "x2" (fun _ m _ -> string_of_int @@ xy sin (m.Model.rh - offset))
-    |. attr "y2" (fun _ m _ -> string_of_int @@ xy ((~-.) $ cos) (m.Model.rh - offset))
+  let center = radius / 2 in
+
+  let line ?(dashed=false) offset =
+    let ret = static "line"
+    |. int attr "x1" (offset + center)
+    |. int attr "y1" 0
+    |. int attr "x2" (offset + center)
+    |. int attr "y2" radius
     |. str attr "stroke" "gray"
     |. int attr "stroke-width" 5
-    |. str attr "stroke-dasharray" "5,5"
+    in
+    if dashed then ret |. str attr "stroke-dasharray" "5,5" else ret
+  in
+  let marking1 =
+    static "text"
+    |. int attr "x" (center - 18)
+    |. int attr "y" radius
+    |. str attr "style" "font:bold 30px sans-serif"
+    |. text (fun _ m _ -> str2d m.Model.rh)
+  in
+  let marking2 =
+    static "text"
+    |. str attr "transform" ("rotate(180 " ^ (string_of_int center) ^ " 0)")
+    |. int attr "x" (center - 18)
+    |. int attr "y" 0
+    |. str attr "style" "font:bold 30px sans-serif"
+    |. text (fun _ m _ -> str2d ((18 + m.Model.rh) mod 36))
   in
   let runway =
     static "g"
-    |. str attr "transform" "rotate(45)"
-    |. seq [ line (-1); line 1 ]
+    |. attr "transform" (fun _ m _ -> "rotate(" ^ (string_of_int (m.Model.rh * 10)) ^ " " ^ (string_of_int center) ^ " " ^ (string_of_int center) ^ ")")
+    |. seq [ line (-20); line 20; line 0 ~dashed:true; marking1; marking2 ]
   in
   svg <.> runway
 
