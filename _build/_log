@@ -1,8 +1,0 @@
-### Starting build.
-# Target: hello.ml.depends, tags: { annot, bin_annot, debug, extension:ml, file:hello.ml, ocaml, ocamldep, pkg_d3, pkg_js_of_ocaml, quiet, traverse }
-/home/lykhovyd/.opam/4.07.0/bin/ocamlfind ocamldep -package d3 -package js_of_ocaml -modules hello.ml > hello.ml.depends
-# Target: hello.cmo, tags: { annot, bin_annot, byte, compile, debug, extension:cmo, extension:ml, file:hello.cmo, file:hello.ml, implem, ocaml, pkg_d3, pkg_js_of_ocaml, quiet, traverse }
-/home/lykhovyd/.opam/4.07.0/bin/ocamlfind ocamlc -c -g -annot -bin-annot -package d3 -package js_of_ocaml -o hello.cmo hello.ml
-# Target: hello.byte, tags: { annot, bin_annot, byte, debug, dont_link_with, extension:byte, file:hello.byte, link, ocaml, pkg_d3, pkg_js_of_ocaml, program, quiet, traverse }
-/home/lykhovyd/.opam/4.07.0/bin/ocamlfind ocamlc -g -linkpkg -package d3 -package js_of_ocaml hello.cmo -o hello.byte
-# Compilation successful.
