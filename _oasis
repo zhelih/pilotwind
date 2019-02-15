@@ -1,0 +1,16 @@
+OASISFormat: 0.4
+Name: Pilotwind
+License: LGPL
+Version: 1.0
+Authors: Eugene Lykhovyd
+Synopsis: Js for wind circle
+BuildTools: ocamlbuild
+Plugins: META(0.4), DevFiles (0.4)
+
+Executable "main"
+  Path: ./
+  MainIs: hello.ml
+  Build: true
+  BuildDepends: js_of_ocaml, d3
+  CompiledObject: byte
+# InternalModules: 

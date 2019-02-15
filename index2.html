@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>D3js with js_of_ocaml</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script>
+      function handleWind(tc) {
+        if(tc) {
+          document.getElementById('edit_wind_tc').value = tc;
+          document.getElementById('wind_tc').value = tc;
+        }
+        updateAll();
+      }
+      function handleSpeed(speed) {
+        if(speed) {
+          document.getElementById('edit_wind_kn').value = speed;
+          document.getElementById('wind_kn').value = speed;
+        }
+        updateAll();
+      }
+      function handleHeading(hd) {
+        if(hd) {
+          document.getElementById('edit_runway_hd').value = hd;
+          document.getElementById('runway_hd').value = hd;
+        }
+        updateAll();
+      }
+      function updateAll() {
+        wind_direction = document.getElementById('wind_tc').value;
+        wind_speed = document.getElementById('wind_kn').value;
+        runway_heading = document.getElementById('runway_hd').value;
+
+        head_comp = wind_speed * Math.cos((runway_heading*10 - wind_direction)*Math.PI / 180);
+        cros_comp = wind_speed * Math.sin((runway_heading*10 - wind_direction)*Math.PI / 180);
+
+        document.getElementById('out_hc').innerHTML = head_comp.toFixed(2);
+        document.getElementById('out_cw').innerHTML = cros_comp.toFixed(2);
+      }
+    </script>
+  </head>
+  <body>
+    <div name="wind_direction">
+      <input type="range" min="0" max="360" value="90" name="wind_tc" id="wind_tc" oninput="handleWind(this.value)" onchange="handleWind(this.value)"/>
+      <label for="wind_tc">Wind direction:</label>
+      <input type="number" for="wind_tc" name="edit_wind_tc" id="edit_wind_tc" value="90" oninput="handleWind(this.value)" onchange="handleWind(this.value)" min="0" max="360"/>
+    </div>
+    <div name="wind_speed">
+      <input type="range" min="0" max="50" value="10" name="wind_kn" id="wind_kn" oninput="handleSpeed(this.value)" onchange="handleSpeed(this.value)"/>
+      <label for="wind_kn">Wind speed (knots):</label>
+      <input type="number" for="wind_kn" name="edit_wind_kn" id="edit_wind_kn" value="10" oninput="handleSpeed(this.value)" onchange="handleSpeed(this.value)" min="0" max="50"/>
+    </div>
+    <div name="runway_heading">
+      <input type="range" min="0" max="36" value="15" name="runway_hd" id="runway_hd" oninput="handleHeading(this.value)" onchange="handleHeading(this.value)"/>
+      <label for="runway_hd">Runway heading: </label>
+      <input type="number" for="runway_hd" name="edit_runway_hd" id="edit_runway_hd" value="15" oninput="handleHeading(this.value)" onchange="handleHeading(this.value)" min="0" max="36"/>
+    </div>
+    <div name="results">
+    <label name="hc" id="hc">Headwind component: </label><label for="hc" id="out_hc">unknown</label><br>
+    <label name="cw" id="cw">Crosswind component: </label><label for="cw" id="out_cw">unknown</label><br>
+    </div>
+
+
+
+
+  </body>
+</html>
