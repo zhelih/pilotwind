@@ -15,6 +15,9 @@ let get t id =
   | "ws" -> t.ws
   | "rh" -> t.rh
   | _ -> assert false
+
+let headwind t = (float t.ws) *. cos (((float t.rh) *. 10. -. (float t.wc)) *. pi /. 180.)
+let crosswind t = (float t.ws) *. sin (((float t.rh) *. 10. -. (float t.wc)) *. pi /. 180.)
 end
 
 module Event = struct
@@ -118,7 +121,13 @@ let runway_image radius =
     |. attr "transform" (fun _ m _ -> "rotate(" ^ (string_of_int (m.Model.rh * 10)) ^ " " ^ (string_of_int center) ^ " " ^ (string_of_int center) ^ ")")
     |. seq [ line (-20); line 20; line 0 ~dashed:true; marking1; marking2 ]
   in
-  svg <.> runway
+  let wind =
+    static "polygon"
+    |. str attr "points" "130,300 150,270 170,300"
+    |. str attr "style" "fill:red;stroke:blue;stroke-width:1"
+    |. attr "transform" (fun _ m _ -> "rotate(" ^(string_of_int m.Model.wc) ^ " 150 150)")
+  in
+  svg <.> seq [ runway; wind ]
 
 let items_of_model k =
   static "div"
@@ -126,6 +135,10 @@ let items_of_model k =
       range_with_label 0 360 k "wc" "Wind direction";
       range_with_label 0 50 k "ws" "Wind velocity";
       range_with_label 0 36 k "rh" "Runway heading";
+      static "label" |. text (fun _ m _ -> "Crosswind component (knots): " ^ (Printf.sprintf "%.2f" @@ Model.crosswind m));
+      static "br";
+      static "label" |. text (fun _ m _ -> "Headwind  component (knots): " ^ (Printf.sprintf "%.2f" @@ Model.headwind m));
+      static "br";
       runway_image 300;
     ]
 
