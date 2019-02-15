@@ -41,4 +41,4 @@ configure:
 # OASIS_STOP
 
 js: *.byte
-	js_of_ocaml hello.byte -o hello.js
+	js_of_ocaml main.byte -o pilotwind.js
