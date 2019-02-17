@@ -179,7 +179,7 @@ let wind_circle =
     static "circle"
     |. int attr "cx" 150
     |. int attr "cy" 150
-    |. int attr "r" 130
+    |. int attr "r" 93
     |. str attr "stroke" "black"
     |. int attr "stroke-width" 3
     |. str attr "fill" "white"
@@ -187,31 +187,31 @@ let wind_circle =
   let axis () =
     static "line"
     |. int attr "x1" 150
-    |. int attr "y1" 10
+    |. int attr "y1" 40
     |. int attr "x2" 150
-    |. int attr "y2" 290
-    |. str attr "stroke" "black"
+    |. int attr "y2" 260
+    |. str attr "stroke" "gray"
   in
   let mytext angle radius =
-    let x = (int_of_float @@ ((sin (angle *. pi /. 180.)) *. (float radius))) + 150 in
-    let y = - (int_of_float @@ ((cos (angle *. pi /. 180.)) *. (float radius))) + 150 in
+    let x = (int_of_float @@ ((sin (angle *. pi /. 180.)) *. (float radius))) + 135 in
+    let y = - (int_of_float @@ ((cos (angle *. pi /. 180.)) *. (float radius))) + 155 in
     static "text"
     |. int attr "x" x
     |. int attr "y" y
-    |. str attr "style" "font: 10px sans-serif"
+    |. str attr "style" "font: 15px sans-serif"
   in
   let angles = [360.; 45.; 90.; 135.; 180.; 225.; 270.; 315.] in
   let wind_correction = static "g" |. seq @@ List.map (fun angle ->
-    mytext angle 110
+    mytext angle 75
     |. text (fun _ m _ ->
       let angle = Model.wca m angle in
-      Printf.sprintf "%.2f" angle)
+      Printf.sprintf "%.1f" angle)
   ) angles in
   let ground_speed = static "g" |. seq @@ List.map (fun angle ->
-    mytext angle 140
+    mytext angle 120
     |. text (fun _ m _ ->
       let angle = Model.gs m angle in
-      Printf.sprintf "%.2fkn" angle)
+      Printf.sprintf "%.1f" angle)
   ) angles in
   svg <.> seq [ circle; axis (); axis () |. str attr "transform" "rotate(90 150 150)"; wind_correction; ground_speed ]
 
