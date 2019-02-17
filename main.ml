@@ -162,7 +162,7 @@ let runway_image radius =
   in
   let wind =
     static "polygon"
-    |. str attr "points" "130,0 150,30 170,0"
+    |. str attr "points" "130,0 150,30 170,0 150,10"
     |. str attr "style" "fill:red;stroke:blue;stroke-width:1"
     |. attr "transform" (fun _ m _ -> "rotate(" ^(string_of_int m.Model.wc) ^ " 150 150)")
   in
