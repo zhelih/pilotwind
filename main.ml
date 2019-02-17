@@ -14,7 +14,7 @@ module Model = struct
   true speed;
 *)
 type t = { wc: int; ws: int; rh: int; ts: int; }
-let init = { wc = 90; ws = 10; rh = 10; ts = 107; }
+let init = { wc = 90; ws = 10; rh = 17; ts = 107; }
 let get t id =
   match id with
   | "wc" -> t.wc
